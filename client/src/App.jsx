@@ -5,7 +5,7 @@ import MeetingCalendar from "./pages/MeetingCalendar";
 function App() {
   return (
     <Routes>
-      <Route path="/calendar" element={<MeetingCalendar />} />
+      <Route path="/" element={<MeetingCalendar />} />
     </Routes>
   );
 }
