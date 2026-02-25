@@ -47,7 +47,12 @@ function Navbar({ date, floor, setFloor }) {
                 <p className="text-white">{formatTime(time)}</p>
             </div>
             <Dropdown menu={{ items, onClick }} placement="bottom">
-                <Button onClick={e => e.preventDefault()}>ชั้น {floor}</Button>
+                <Button
+                    onClick={e => e.preventDefault()}
+                    style={{ fontFamily: "'Kanit', sans-serif" }}
+                >
+                    ชั้น {floor}
+                </Button>
             </Dropdown>
         </div>
     )

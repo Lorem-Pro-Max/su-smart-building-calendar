@@ -17,22 +17,20 @@ function Calendar() {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await getUpcomingBookings(today, floor);
-            setBookings(data);
+            try {
+                const now = new Date();
+                const data = await getUpcomingBookings(now, floor);
+                setBookings(data);
+            } finally {
+                setLoading(false)
+            }
         };
-
         fetchData();
-        setLoading(false)
-
-        const interval = setInterval(fetchData, 5 * 60 * 1000);
-        return () => clearInterval(interval);
     }, [floor]);
-
-    console.log(bookings)
 
     return (<>
         {loading && <LoadingScreen />}
-        <div className="w-full h-screen bg-gradient-to-r from-[#434343] to-black">
+        <div className="w-full h-screen bg-gradient-to-r from-[#434343] to-black flex flex-col overflow-hidden">
             <Navbar date={today} floor={floor} setFloor={setFloor} />
             <Header floor={floor} />
             <MeetingContainer meetings={bookings} currentFloor={floor} />

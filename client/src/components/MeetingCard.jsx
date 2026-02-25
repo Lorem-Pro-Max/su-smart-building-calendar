@@ -14,7 +14,7 @@ function MeetingCard({ meeting }) {
             </div>
             <div className="flex gap-1">
                 <UserOutlined />
-                <p>จันจิรา บุญผ่อง</p>
+                <p>{meeting.firstname} {meeting.lastname}</p>
             </div>
 
         </div>
