@@ -6,8 +6,8 @@ import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/booking-calendar">
       <App />
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );
