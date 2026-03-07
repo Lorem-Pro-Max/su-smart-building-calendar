@@ -4,7 +4,6 @@ import MeetingContainer from "../components/MeetingContainer"
 import { LoadingScreen } from "../components/common/LoadingScreen"
 
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom";
 import { getUpcomingBookings } from "../services/getMeeting"
 
 function Calendar() {
@@ -26,6 +25,10 @@ function Calendar() {
             }
         };
         fetchData();
+
+        const interval = setInterval(fetchData, 10 * 60 * 1000);
+
+        return () => clearInterval(interval);
     }, [floor]);
 
     return (<>
