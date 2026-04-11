@@ -6,11 +6,15 @@ import { LoadingScreen } from "../components/common/LoadingScreen"
 import { useEffect, useState } from "react"
 import { getUpcomingBookings } from "../services/getMeeting"
 
+const API_POLL_MS = 5 * 60 * 1000;
+const NOW_TICK_MS = 30 * 1000;
+
 function Calendar() {
     const [floor, setFloor] = useState(3)
     const [selectedRoomId, setSelectedRoomId] = useState(null)
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(false)
+    const [nowTick, setNowTick] = useState(() => Date.now())
 
     const today = (() => {
         const d = new Date();
@@ -33,10 +37,15 @@ function Calendar() {
         };
         fetchData();
 
-        const interval = setInterval(fetchData, 10 * 60 * 1000);
+        const interval = setInterval(fetchData, API_POLL_MS);
 
         return () => clearInterval(interval);
     }, [floor]);
+
+    useEffect(() => {
+        const tick = setInterval(() => setNowTick(Date.now()), NOW_TICK_MS);
+        return () => clearInterval(tick);
+    }, []);
 
     return (<>
         {loading && <LoadingScreen />}
@@ -59,6 +68,7 @@ function Calendar() {
                         meetings={bookings}
                         currentFloor={floor}
                         selectedRoomId={selectedRoomId}
+                        nowTick={nowTick}
                     />
                 </div>
             ) : (
@@ -66,6 +76,7 @@ function Calendar() {
                     meetings={bookings}
                     currentFloor={floor}
                     selectedRoomId={selectedRoomId}
+                    nowTick={nowTick}
                 />
             )}
         </div>

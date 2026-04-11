@@ -11,6 +11,7 @@ function MeetingContainer({
     meetings,
     currentFloor,
     selectedRoomId = null,
+    nowTick = null,
 }) {
 
     let filteredMeetings = meetings.filter(m => m.floor === Number(currentFloor));
@@ -26,7 +27,7 @@ function MeetingContainer({
         return timeA - timeB;
     });
 
-    const nowMs = Date.now();
+    const nowMs = nowTick ?? Date.now();
 
     if (selectedRoomId != null) {
         const meetingNow = sortedMeetings.find((m) => isMeetingOngoing(m, nowMs)) ?? null;
