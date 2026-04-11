@@ -15,7 +15,7 @@ export default function FloorCard({
   return (
     <Col xs={24}>
       <div
-        className={`p-4 rounded-2xl bg-white shadow-lg cursor-pointer hover:ring-1 hover:ring-teal-400 ${isSelected ? "ring-2 ring-teal-400 ring-offset-1" : ""
+        className={`p-4 rounded-2xl bg-white shadow-lg cursor-pointer hover:ring-1 hover:ring-teal-400 font-kanit ${isSelected ? "ring-2 ring-teal-400 ring-offset-1" : ""
           }`}
         onClick={onSelect}
         role="button"
@@ -32,7 +32,7 @@ export default function FloorCard({
             <img src={BuildingIcon} className="w-4" alt="" />
           </div>
           <div className="min-w-0">
-            <div className="font-bold text-sm leading-tight truncate">
+            <div className="text-sm leading-tight truncate">
               ชั้น {floorKey}
             </div>
             <div className="text-[14px] text-gray-500">

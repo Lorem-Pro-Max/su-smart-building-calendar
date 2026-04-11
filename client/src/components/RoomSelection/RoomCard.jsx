@@ -18,7 +18,7 @@ function RoomCard({
     return (
         <Col key={roomId} xs={24} sm={12} md={12} lg={8}>
             <div
-                className={`p-4 rounded-2xl bg-white shadow-lg hover:ring-1 hover:ring-teal-400 cursor-pointer ${isSelected ? "ring-2 ring-teal-400 ring-offset-1" : ""}`}
+                className={`p-4 rounded-2xl bg-white shadow-lg hover:ring-1 hover:ring-teal-400 cursor-pointer font-kanit ${isSelected ? "ring-2 ring-teal-400 ring-offset-1" : ""}`}
                 onClick={() => onSelectRoom({ type: "room", value: Number(roomItem.id) })}
             >
                 <div className="flex gap-3">
@@ -26,7 +26,7 @@ function RoomCard({
                         <img src={BuildingIcon} className="w-4" alt="" />
                     </div>
                     <div className="min-w-0">
-                        <div className="font-bold text-sm leading-tight truncate">
+                        <div className="text-sm leading-tight truncate">
                             {roomName}
                         </div>
                         <div className="text-[14px] text-gray-500">ชั้น {floorKey}</div>
