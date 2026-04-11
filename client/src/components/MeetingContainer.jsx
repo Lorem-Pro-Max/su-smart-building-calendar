@@ -1,4 +1,5 @@
 import MeetingCard from "./MeetingCard"
+import { RoomMeetingLayout } from "./RoomDisplay"
 
 function isMeetingOngoing(meeting, nowMs) {
     const start = new Date(meeting.start_dateTime).getTime();
@@ -35,26 +36,10 @@ function MeetingContainer({
             ) ?? null;
 
         return (
-            <>
-                <div className="p-10 flex flex-col gap-3 flex-1 overflow-y-auto min-h-0">
-                    <p className="text-white">Meeting now</p>
-                    {meetingNow ? (
-                        <MeetingCard key={`now-${meetingNow.id}`} meeting={meetingNow} />
-                    ) : (
-                        <p className="text-gray-400 text-center">
-                            ไม่มีการประชุมในขณะนี้
-                        </p>
-                    )}
-                    <p className="text-white mt-6">Next meeting</p>
-                    {nextMeeting ? (
-                        <MeetingCard key={`next-${nextMeeting.id}`} meeting={nextMeeting} />
-                    ) : (
-                        <p className="text-gray-400 text-center">
-                            ไม่มีการประชุมถัดไป
-                        </p>
-                    )}
-                </div>
-            </>
+            <RoomMeetingLayout
+                meetingNow={meetingNow}
+                nextMeeting={nextMeeting}
+            />
         );
     }
 

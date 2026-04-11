@@ -40,18 +40,34 @@ function Calendar() {
 
     return (<>
         {loading && <LoadingScreen />}
-        <div className="w-full h-screen bg-gradient-to-r from-[#434343] to-black flex flex-col overflow-hidden">
+        <div
+            className={
+                selectedRoomId != null
+                    ? "w-full h-screen bg-black flex flex-col overflow-hidden"
+                    : "w-full h-screen bg-gradient-to-r from-[#434343] to-black flex flex-col overflow-hidden"
+            }
+        >
             <Navbar date={today} floor={floor} setFloor={setFloor} />
             <Header
                 floor={floor}
                 setFloor={setFloor}
                 setSelectedRoomId={setSelectedRoomId}
             />
-            <MeetingContainer
-                meetings={bookings}
-                currentFloor={floor}
-                selectedRoomId={selectedRoomId}
-            />
+            {selectedRoomId != null ? (
+                <div className="flex-1 flex flex-col min-h-0 bg-white">
+                    <MeetingContainer
+                        meetings={bookings}
+                        currentFloor={floor}
+                        selectedRoomId={selectedRoomId}
+                    />
+                </div>
+            ) : (
+                <MeetingContainer
+                    meetings={bookings}
+                    currentFloor={floor}
+                    selectedRoomId={selectedRoomId}
+                />
+            )}
         </div>
     </>)
 }
