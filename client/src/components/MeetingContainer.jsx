@@ -40,6 +40,7 @@ function MeetingContainer({
             <RoomMeetingLayout
                 meetingNow={meetingNow}
                 nextMeeting={nextMeeting}
+                roomId={selectedRoomId}
             />
         );
     }

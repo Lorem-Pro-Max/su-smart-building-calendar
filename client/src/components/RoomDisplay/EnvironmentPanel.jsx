@@ -1,65 +1,86 @@
-import {
-  CloudOutlined,
-  DashboardOutlined,
-  FilterOutlined,
-} from "@ant-design/icons";
+import { useEffect, useState, useCallback } from "react";
 import EnvironmentMetricCard from "./EnvironmentMetricCard";
-import { MOCK_ENVIRONMENT } from "./mockEnvironment";
+import { getAirQualityByRoom } from "../../services/getAirQuality";
+import { getAirQualityColor } from "../utils/airQualityColor";
+import tempIcon from "../../assets/icons/temp.svg";
+import dustIcon from "../../assets/icons/dust.svg";
+import airIcon from "../../assets/icons/air.svg";
 
-const iconFor = (key) => {
-  const map = {
-    temp: <DashboardOutlined />,
-    pm10: <FilterOutlined />,
-    pm25: <FilterOutlined />,
-    co2: <CloudOutlined />,
-    co: <CloudOutlined />,
-  };
-  return map[key] ?? null;
-};
+const POLL_INTERVAL_MS = 30_000;
 
-export default function EnvironmentPanel() {
-  const m = MOCK_ENVIRONMENT;
+const icon = (src, alt) => <img src={src} alt={alt} className="w-5 h-5" />;
+
+const METRICS = [
+  { key: "temp", label: "Temp", unit: "°C", icon: icon(tempIcon, "temp") },
+  { key: "pm10", label: "PM 10", unit: "μg/m³", icon: icon(dustIcon, "pm10") },
+  { key: "pm25", label: "PM 2.5", unit: "μg/m³", icon: icon(dustIcon, "pm25") },
+  { key: "co2", label: "CO₂", unit: "ppm", icon: icon(airIcon, "co2") },
+  { key: "co", label: "CO", unit: "ppm", icon: icon(airIcon, "co") },
+];
+
+function formatValue(key, raw) {
+  if (raw === null || raw === undefined) return "--";
+  if (key === "temp") return parseFloat(raw).toFixed(2);
+  return String(raw);
+}
+
+export default function EnvironmentPanel({ roomId }) {
+  const [data, setData] = useState(null);
+
+  const fetchData = useCallback(async () => {
+    if (!roomId) return;
+    try {
+      const result = await getAirQualityByRoom(roomId);
+      setData(result);
+    } catch {
+      setData(null);
+    }
+  }, [roomId]);
+
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, POLL_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [fetchData]);
+
+  const getValue = (key) => formatValue(key, data?.[key]);
+  const getColor = (key) => ({ color: getAirQualityColor(key, data?.[key]) });
+
+  const temp = METRICS[0];
 
   return (
-    <div className="flex flex-col gap-3 h-full min-h-0 min-w-0 md:max-w-md lg:max-w-lg w-full">
+    <div className="flex flex-col h-full min-h-0 min-w-0 md:max-w-md lg:max-w-lg w-full">
       <EnvironmentMetricCard
-        icon={iconFor("temp")}
-        label={m.temp.label}
-        value={m.temp.value}
-        unit={m.temp.unit}
-        valueClassName={m.temp.valueClassName}
+        icon={temp.icon}
+        label={temp.label}
+        value={getValue(temp.key)}
+        unit={temp.unit}
+        valueStyle={getColor(temp.key)}
+        large
       />
-      <div className="grid grid-cols-2 gap-3">
-        <EnvironmentMetricCard
-          icon={iconFor("pm10")}
-          label={m.pm10.label}
-          value={m.pm10.value}
-          unit={m.pm10.unit}
-          valueClassName={m.pm10.valueClassName}
-        />
-        <EnvironmentMetricCard
-          icon={iconFor("pm25")}
-          label={m.pm25.label}
-          value={m.pm25.value}
-          unit={m.pm25.unit}
-          valueClassName={m.pm25.valueClassName}
-        />
+      <div className="grid grid-cols-2">
+        {METRICS.slice(1, 3).map((m) => (
+          <EnvironmentMetricCard
+            key={m.key}
+            icon={m.icon}
+            label={m.label}
+            value={getValue(m.key)}
+            unit={m.unit}
+            valueStyle={getColor(m.key)}
+          />
+        ))}
       </div>
-      <div className="grid grid-cols-2 gap-3">
-        <EnvironmentMetricCard
-          icon={iconFor("co2")}
-          label={m.co2.label}
-          value={m.co2.value}
-          unit={m.co2.unit}
-          valueClassName={m.co2.valueClassName}
-        />
-        <EnvironmentMetricCard
-          icon={iconFor("co")}
-          label={m.co.label}
-          value={m.co.value}
-          unit={m.co.unit}
-          valueClassName={m.co.valueClassName}
-        />
+      <div className="grid grid-cols-2">
+        {METRICS.slice(3, 5).map((m) => (
+          <EnvironmentMetricCard
+            key={m.key}
+            icon={m.icon}
+            label={m.label}
+            value={getValue(m.key)}
+            unit={m.unit}
+            valueStyle={getColor(m.key)}
+          />
+        ))}
       </div>
     </div>
   );
