@@ -17,7 +17,7 @@ export const fetchUpcomingByDateAndFloor = async (date, floor) => {
     FROM room_booking rb
     JOIN room r ON rb.room_id = r.id
     LEFT JOIN "user" u ON rb.requester_id = u.id
-    WHERE rb."start_dateTime" >= ${date}
+    WHERE rb."end_dateTime" >= ${date}
       AND r.floor = ${floor}
       AND rb.status_id IN (2, 5)
     ORDER BY rb."start_dateTime" ASC
