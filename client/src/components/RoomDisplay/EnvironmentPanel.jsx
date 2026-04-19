@@ -49,16 +49,19 @@ export default function EnvironmentPanel({ roomId }) {
   const temp = METRICS[0];
 
   return (
-    <div className="flex flex-col h-full min-h-0 min-w-0 md:max-w-md lg:max-w-lg w-full">
-      <EnvironmentMetricCard
-        icon={temp.icon}
-        label={temp.label}
-        value={getValue(temp.key)}
-        unit={temp.unit}
-        valueStyle={getColor(temp.key)}
-        large
-      />
-      <div className="grid grid-cols-2">
+    <div className="flex flex-col h-full min-h-0 min-w-[370px] w-full lg:max-w-lg">
+      <div className="flex-1 min-h-0 flex flex-col">
+        <EnvironmentMetricCard
+          icon={temp.icon}
+          label={temp.label}
+          value={getValue(temp.key)}
+          unit={temp.unit}
+          valueStyle={getColor(temp.key)}
+          large
+          className="w-full h-full min-h-0"
+        />
+      </div>
+      <div className="flex-1 min-h-0 flex flex-row gap-1 w-full">
         {METRICS.slice(1, 3).map((m) => (
           <EnvironmentMetricCard
             key={m.key}
@@ -67,10 +70,11 @@ export default function EnvironmentPanel({ roomId }) {
             value={getValue(m.key)}
             unit={m.unit}
             valueStyle={getColor(m.key)}
+            className="flex-1 min-h-0 h-full min-w-0"
           />
         ))}
       </div>
-      <div className="grid grid-cols-2">
+      <div className="flex-1 min-h-0 flex flex-row gap-1 w-full">
         {METRICS.slice(3, 5).map((m) => (
           <EnvironmentMetricCard
             key={m.key}
@@ -79,6 +83,7 @@ export default function EnvironmentPanel({ roomId }) {
             value={getValue(m.key)}
             unit={m.unit}
             valueStyle={getColor(m.key)}
+            className="flex-1 min-h-0 h-full min-w-0"
           />
         ))}
       </div>
