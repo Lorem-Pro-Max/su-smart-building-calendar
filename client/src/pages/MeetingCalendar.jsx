@@ -62,23 +62,20 @@ function Calendar() {
                 setFloor={setFloor}
                 setSelectedRoomId={setSelectedRoomId}
             />
-            {selectedRoomId != null ? (
-                <div className="flex-1 flex flex-col min-h-0 bg-white">
-                    <MeetingContainer
-                        meetings={bookings}
-                        currentFloor={floor}
-                        selectedRoomId={selectedRoomId}
-                        nowTick={nowTick}
-                    />
-                </div>
-            ) : (
+            <div
+                className={
+                    selectedRoomId != null
+                        ? "flex-1 flex flex-col min-h-0 bg-white"
+                        : "flex-1 flex flex-col min-h-0"
+                }
+            >
                 <MeetingContainer
                     meetings={bookings}
                     currentFloor={floor}
                     selectedRoomId={selectedRoomId}
                     nowTick={nowTick}
                 />
-            )}
+            </div>
         </div>
     </>)
 }

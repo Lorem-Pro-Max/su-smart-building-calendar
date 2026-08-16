@@ -1,10 +1,24 @@
 import MeetingCard from "./MeetingCard"
 import { RoomMeetingLayout } from "./RoomDisplay"
+import { useAutoScroll } from "./utils/useAutoScroll"
 
 function isMeetingOngoing(meeting, nowMs) {
     const start = new Date(meeting.start_dateTime).getTime();
     const end = new Date(meeting.end_dateTime).getTime();
     return start <= nowMs && end > nowMs;
+}
+
+function MeetingList({ meetings }) {
+    const scrollRef = useAutoScroll();
+
+    return (
+        <div
+            ref={scrollRef}
+            className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-3"
+        >
+            {meetings.map(meeting => <MeetingCard key={meeting.id} meeting={meeting} />)}
+        </div>
+    );
 }
 
 function MeetingContainer({
@@ -45,19 +59,15 @@ function MeetingContainer({
         );
     }
 
-    const emptyMessage = "No Meeting found";
-
     return (
-        <>
-            <div className="p-10 flex flex-col gap-3 flex-1 overflow-y-auto min-h-0">
-                <p className="text-white">Next Meeting</p>
-                {sortedMeetings.length > 0 ? (
-                    sortedMeetings.map(meeting => <MeetingCard key={meeting.id} meeting={meeting} />)
-                ) : (
-                    <p className="text-gray-400 text-center">{emptyMessage}</p>
-                )}
-            </div>
-        </>
+        <div className="p-10 flex flex-col gap-3 flex-1 min-h-0">
+            <p className="text-white">Next Meeting</p>
+            {sortedMeetings.length > 0 ? (
+                <MeetingList meetings={sortedMeetings} />
+            ) : (
+                <p className="text-gray-400 text-center">No Meeting found</p>
+            )}
+        </div>
     )
 }
 
