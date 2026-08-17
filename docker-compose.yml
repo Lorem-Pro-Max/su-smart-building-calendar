@@ -8,7 +8,7 @@ networks:
         - subnet: 172.20.0.0/16
 
 services:
-  booking-frontend:
+  booking-calendar-frontend:
     build:
       context: ./client
       args:
@@ -17,7 +17,7 @@ services:
       - booking_frontend_dist:/shared-assets
     command: sh -c "cp -rv /app/dist/. /shared-assets/"
 
-  booking-backend:
+  booking-calendar-backend:
     build: ./server
     restart: always
     ports:
@@ -28,7 +28,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  booking-nginx:
+  booking-calendar-nginx:
     image: nginx:stable-alpine
     ports:
       - "7190:80"
