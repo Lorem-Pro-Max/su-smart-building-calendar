@@ -13,12 +13,14 @@ services:
       context: ./client
       args:
         - VITE_API_BASE=${VITE_API_BASE}
+    container_name: booking-calendar-frontend
     volumes:
       - booking_frontend_dist:/shared-assets
     command: sh -c "cp -rv /app/dist/. /shared-assets/"
 
   booking-calendar-backend:
     build: ./server
+    container_name: booking-calendar-backend
     restart: always
     ports:
       - "8112:8112"
@@ -30,11 +32,12 @@ services:
 
   booking-calendar-nginx:
     image: nginx:stable-alpine
+    container_name: booking-calendar-nginx
     ports:
       - "7190:80"
     volumes:
       - ./nginx/gateway.conf:/etc/nginx/conf.d/default.conf:ro
       - booking_frontend_dist:/usr/share/nginx/html/booking-calendar:ro
     depends_on:
-      - booking-backend
+      - booking-calendar-backend
     restart: always
