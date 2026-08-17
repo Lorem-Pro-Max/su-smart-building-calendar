@@ -27,8 +27,10 @@ services:
     environment:
       - PORT=${PORT}
       - DATABASE_URL=${DATABASE_URL}
+      - IOT_SERVER_URL=${IOT_SERVER_URL}
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "55.sc.su.ac.th:host-gateway"
 
   booking-calendar-nginx:
     image: nginx:stable-alpine
