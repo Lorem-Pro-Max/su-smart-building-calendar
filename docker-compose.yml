@@ -1,6 +1,12 @@
 volumes:
   booking_frontend_dist:
 
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
 services:
   booking-frontend:
     build:
